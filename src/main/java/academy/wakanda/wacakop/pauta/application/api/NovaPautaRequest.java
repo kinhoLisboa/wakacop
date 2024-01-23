@@ -10,7 +10,7 @@ public class NovaPautaRequest {
     @NotBlank
     private String titulo;
     @NotBlank
-    private String descrica;
+    private String descricao;
     @NotNull
     private UUID idAssociado;
 }
