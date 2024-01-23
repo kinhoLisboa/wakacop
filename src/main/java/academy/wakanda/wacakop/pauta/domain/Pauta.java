@@ -18,5 +18,5 @@ public class Pauta {
     private String titulo;
     private String descrica;
     private UUID idAssociado;
-    private LocalDateTime dataCriacao
+    private LocalDateTime dataCriacao;
 }
