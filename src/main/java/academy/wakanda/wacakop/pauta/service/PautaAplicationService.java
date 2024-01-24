@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 @Log4j2
@@ -22,5 +24,13 @@ public class PautaAplicationService implements PautaService {
         Pauta pauta = pautaRepository.salva(new Pauta(novaPauta));
         log.info("[Finish] PautaAplicationService - cadastraPauta");
         return new PautaCadastradaResponse(pauta);
+    }
+
+    @Override
+    public Pauta getPautaPorId(UUID idPauta) {
+        log.info("[Start] PautaAplicationService - getPautaPorId");
+        Pauta pautaPorId =  pautaRepository.buscaPautaPorId(idPauta);
+        log.info("[Finish] PautaAplicationService - getPautaPorId");
+        return pautaPorId;
     }
 }
