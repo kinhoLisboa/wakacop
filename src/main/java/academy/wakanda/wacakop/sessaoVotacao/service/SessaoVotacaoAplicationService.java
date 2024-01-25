@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 public class SessaoVotacaoAplicationService implements SessaoVotacaoService {
 
     private final SessaoVotacaoRepository sessaoVotacaoRepository;
-    private PautaService pautaService;
+    private final PautaService pautaService;
+
+
     @Override
     public SessaoAberturaResponse abreSessao(SessaoAberturaRequest sessaoAberturaRequest) {
         log.info("[Start] SessaoVotacaoAplicationService- abreSessao");

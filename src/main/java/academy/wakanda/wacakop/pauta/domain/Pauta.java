@@ -2,7 +2,9 @@ package academy.wakanda.wacakop.pauta.domain;
 
 import academy.wakanda.wacakop.pauta.application.api.NovaPautaRequest;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,7 @@ import java.util.UUID;
 @Entity
 @ToString
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Pauta {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
