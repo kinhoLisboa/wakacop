@@ -8,12 +8,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @ToString
@@ -32,7 +31,9 @@ public class SessaoVotacao {
     @Enumerated(EnumType.STRING)
     private StatusSessaoVotacao status;
     @OneToMany(mappedBy = "sessaoVotacao", cascade = CascadeType.ALL, orphanRemoval = true)
-    private HashMap<String, VotoPauta> votos;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @MapKey(name= "cpfAssociado")
+    private Map<String, VotoPauta> votos;
 
     public SessaoVotacao(SessaoAberturaRequest sessaoAberturaRequest, Pauta pauta) {
         this.idPauta = pauta.getId();
@@ -44,10 +45,29 @@ public class SessaoVotacao {
     }
 
     public VotoPauta recebeVoto(VotoRequest votoRequest){
+        validaSessaoAberta();
        validaAssociado(votoRequest.getCpfAssociado());
        VotoPauta voto = new VotoPauta(this, votoRequest);
        votos.put(votoRequest.getCpfAssociado(),voto);
        return voto;
+    }
+
+    private void validaSessaoAberta() {
+        if(this.status.equals(StatusSessaoVotacao.FECHADA)){
+            throw new RuntimeException("Sessao esta fechada!");
+        }
+    }
+    private void atualizaStatus(){
+        if(this.status.equals(StatusSessaoVotacao.ABERTA)){
+            if(LocalDateTime.now().isAfter(this.dataEncerramento)){
+                fechaSessao();
+            }
+        }
+    }
+
+    private void fechaSessao() {
+        this.status = StatusSessaoVotacao.FECHADA;
+        
     }
 
     private void validaAssociado(String cpfAssociado) {
