@@ -1,6 +1,7 @@
 package academy.wakanda.wacakop.sessaoVotacao.domain;
 
 import academy.wakanda.wacakop.pauta.domain.Pauta;
+import academy.wakanda.wacakop.sessaoVotacao.aplication.api.ResultadoSessaoResponse;
 import academy.wakanda.wacakop.sessaoVotacao.aplication.api.SessaoAberturaRequest;
 import academy.wakanda.wacakop.sessaoVotacao.aplication.api.VotoRequest;
 import jakarta.persistence.*;
@@ -43,6 +44,11 @@ public class SessaoVotacao {
         this.status = StatusSessaoVotacao.ABERTA;
         this.votos = new HashMap<>();
     }
+    public ResultadoSessaoResponse obtemResultado(){
+        atualizaStatus();
+        return new ResultadoSessaoResponse(this);
+
+    }
 
     public VotoPauta recebeVoto(VotoRequest votoRequest){
         validaSessaoAberta();
@@ -79,4 +85,22 @@ public class SessaoVotacao {
     }
 
 
+    public Long getTotalVotos() {
+        return Long.valueOf(this.votos.size());
+    }
+
+    public Long getTotalSim() {
+        calculaVotosPorOpcao(OpcaoVoto.SIM);
+        return calculaVotosPorOpcao(OpcaoVoto.SIM);
+    }
+    public Long getTotalNao() {
+        calculaVotosPorOpcao(OpcaoVoto.NAO);
+        return calculaVotosPorOpcao(OpcaoVoto.NAO);
+    }
+
+    private Long calculaVotosPorOpcao(OpcaoVoto opcao) {
+        return votos.values()
+                .stream().filter(votos -> votos.opcaoIgual(opcao))
+                .count();
+    }
 }

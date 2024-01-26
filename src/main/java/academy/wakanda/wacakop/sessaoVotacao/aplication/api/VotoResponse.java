@@ -15,6 +15,7 @@ public class VotoResponse {
     private UUID idSessao;
     private String cpfAssociado;
     private LocalDateTime momentoVoto;
+
     public VotoResponse(VotoPauta voto) {
         this.id = voto.getId();
         this.idSessao = voto.getIdSessao();
