@@ -53,6 +53,7 @@ public class SessaoVotacao {
     }
 
     private void validaSessaoAberta() {
+        atualizaStatus();
         if(this.status.equals(StatusSessaoVotacao.FECHADA)){
             throw new RuntimeException("Sessao esta fechada!");
         }
@@ -67,7 +68,7 @@ public class SessaoVotacao {
 
     private void fechaSessao() {
         this.status = StatusSessaoVotacao.FECHADA;
-        
+
     }
 
     private void validaAssociado(String cpfAssociado) {
